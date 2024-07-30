@@ -4,31 +4,61 @@ import { useState } from 'react';
 
 function App() {
 
+  let blankCustomer = {"name": "", "email": "", "password": "" };
   let [customers, setCustomers] = useState(customer_data);
-  let formData = useState({ "name": "", "email": "", "password": "" });
+  let [formData, setFormData] = useState(blankCustomer);
   let [isEditing, setIsEditing] = useState(false);
   let [currentIndex, setCurrentIndex] = useState(null);
 
-  const handleInputChange = function (event) {
+  const handleInputChange = function(e) {
     console.log("in handleInputChange()");
+    let {name, value} = e.target;
+    setFormData({...formData, [name] : value});
   }
 
   const handleListClick = function(index){
-    setIsEditing(true);
-    setCurrentIndex(index);
     console.log("in handleListClick()");
+    if(currentIndex === index) {
+      setFormData(blankCustomer);
+      setIsEditing(false);
+      setCurrentIndex(null);
+    } else {
+      setFormData(customers[index]);
+      setIsEditing(true);
+      setCurrentIndex(index);
+    }
+    
   }
 
   let onCancelClick = function () {
+    setFormData(blankCustomer);
+    setIsEditing(false);
+    setCurrentIndex(null);
     console.log("in onCancelClick()");
   }
 
   let onDeleteClick = function () {
     console.log("in onDeleteClick()");
+    if(isEditing) {
+      let updatedCustomer = customers.filter((_, index) => index !== currentIndex);
+      setCustomers(updatedCustomer);
+      setFormData(blankCustomer);
+      setIsEditing(false);
+    }
   }
 
   let onSaveClick = function () {
     console.log("in onSaveClick()");
+    if(isEditing) {
+      let updatedCustomer = customers.map((customer, index) =>
+        index === currentIndex ? formData : customer);
+      setCustomers(updatedCustomer);
+    } else {
+      setCustomers([...customers, formData]);
+    }
+    setFormData(blankCustomer);
+    setIsEditing(false);
+    
   }
 
 
@@ -46,7 +76,7 @@ function App() {
           </thead>
           <tbody>
             {customers.map((customer, index) =>  (
-              <tr key={index} onClick={() => handleListClick(index)}>
+              <tr key={index} onClick={() => handleListClick(index)} className={ (currentIndex === index) ?'selected': ''}>
                 <td>{customer.name}</td>
                 <td>{customer.email}</td>
                 <td>{customer.password}</td>
@@ -96,9 +126,9 @@ function App() {
 
               <tr className="button-bar">
                 <td colSpan="2">
-                  {isEditing && <input type="button" value="Delete" onClick={onDeleteClick}/>}
-                  <input type="button" value="Save" onClick={onSaveClick} />
-                  <input type="button" value="Cancel" onClick={onCancelClick} />
+                  <button type="button" onClick={onDeleteClick}>Delete</button>
+                  <button type="button" className='bg-green-500' onClick={onSaveClick}>Save</button>
+                  <button type="button" className='btn-blue' onClick={onCancelClick}>Cancel</button>
                 </td>
             </tr>
             </tbody>
