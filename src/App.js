@@ -27,7 +27,6 @@ function App() {
       setIsEditing(true);
       setCurrentIndex(index);
     }
-    
   }
 
   let onCancelClick = function () {
@@ -44,11 +43,13 @@ function App() {
       setCustomers(updatedCustomer);
       setFormData(blankCustomer);
       setIsEditing(false);
+      setCurrentIndex(null);
     }
   }
 
-  let onSaveClick = function () {
+   let onSaveClick = function (e) {
     console.log("in onSaveClick()");
+    e.preventDefault();
     if(isEditing) {
       let updatedCustomer = customers.map((customer, index) =>
         index === currentIndex ? formData : customer);
@@ -58,15 +59,13 @@ function App() {
     }
     setFormData(blankCustomer);
     setIsEditing(false);
-    
   }
-
 
   return (
     <div className="App">
       <div className='customer-list'>
-        <h2>Customer List</h2>
-        <table id='customer-list'>
+        <h2>CUSTOMERS</h2>
+        <table class='customers-list' id='customer-list'>
           <thead>
             <tr>
               <th>Name</th>
@@ -76,7 +75,7 @@ function App() {
           </thead>
           <tbody>
             {customers.map((customer, index) =>  (
-              <tr key={index} onClick={() => handleListClick(index)} className={ (currentIndex === index) ?'selected': ''}>
+              <tr key={index} onClick={() => handleListClick(index)} className={ (currentIndex === index) ? 'selected': ''}>
                 <td>{customer.name}</td>
                 <td>{customer.email}</td>
                 <td>{customer.password}</td>
@@ -87,8 +86,8 @@ function App() {
       </div>
 
       <div className='customer-form'>
-        <h2>{isEditing ? 'Update' : 'Add'}</h2>
-        <form>
+        <h2>{isEditing ? 'UPDATE' : 'ADD'}</h2>
+        <form onSubmit={onSaveClick}>
           <table>
             <tbody>
               <tr>
@@ -126,9 +125,9 @@ function App() {
 
               <tr className="button-bar">
                 <td colSpan="2">
-                  <button type="button" onClick={onDeleteClick}>Delete</button>
-                  <button type="button" className='bg-green-500' onClick={onSaveClick}>Save</button>
-                  <button type="button" className='btn-blue' onClick={onCancelClick}>Cancel</button>
+                  <button type="button" onClick={onDeleteClick} class="style-button">Delete</button>
+                  <button type="submit" class="style-button">Save</button>
+                  <button type="button" onClick={onCancelClick} class="style-button">Cancel</button>
                 </td>
             </tr>
             </tbody>
