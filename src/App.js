@@ -66,7 +66,7 @@ function App() {
 
   return (
     <div className="App">
-      
+      <p>You are testing <b>Hem Patel's</b> project</p>
       <CustomersList 
         customers={customers} currentIndex={currentIndex} handleListClick={handleListClick}>
       </CustomersList>
