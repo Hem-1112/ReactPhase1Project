@@ -28,7 +28,7 @@ form{
   flex-direction: column;
   border: 1px solid #000000;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.5s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
   padding: 10px;
 }
 

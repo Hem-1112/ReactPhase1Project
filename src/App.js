@@ -1,5 +1,7 @@
 import './App.css';
-import customer_data from './assets/customers.json'
+import customer_data from './assets/customers.json';
+import { CustomersList } from './CustomersList';
+import { CustomerAddUpdateForm } from './CustomerAddUpdateForm';
 import { useState } from 'react';
 
 function App() {
@@ -59,81 +61,24 @@ function App() {
     }
     setFormData(blankCustomer);
     setIsEditing(false);
+    setCurrentIndex(null)
   }
 
   return (
     <div className="App">
-      <div className='customer-list'>
-        <h2>CUSTOMERS</h2>
-        <table class='customers-list' id='customer-list'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Password</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map((customer, index) =>  (
-              <tr key={index} onClick={() => handleListClick(index)} className={ (currentIndex === index) ? 'selected': ''}>
-                <td>{customer.name}</td>
-                <td>{customer.email}</td>
-                <td>{customer.password}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      
+      <CustomersList 
+        customers={customers} currentIndex={currentIndex} handleListClick={handleListClick}>
+      </CustomersList>
 
-      <div className='customer-form'>
-        <h2>{isEditing ? 'UPDATE' : 'ADD'}</h2>
-        <form onSubmit={onSaveClick}>
-          <table>
-            <tbody>
-              <tr>
-                <td><label>Name : </label></td>
-                <td><input
-                 type='text'
-                 name='name'
-                 id='name'
-                 value={formData.name}
-                 onChange={handleInputChange}
-                 required /></td>
-              </tr>
-
-              <tr>
-                <td><label>Email : </label></td>
-                <td><input
-                 type='email'
-                 name='email'
-                 id='email'
-                 value={formData.email}
-                 onChange={handleInputChange}
-                 required /></td>
-              </tr>
-
-              <tr>
-                <td><label>Password : </label></td>
-                <td><input
-                 type='text'
-                 name='password'
-                 id='password'
-                 value={formData.password}
-                 onChange={handleInputChange}
-                 required /></td>
-              </tr>
-
-              <tr className="button-bar">
-                <td colSpan="2">
-                  <button type="button" onClick={onDeleteClick} class="style-button">Delete</button>
-                  <button type="submit" class="style-button">Save</button>
-                  <button type="button" onClick={onCancelClick} class="style-button">Cancel</button>
-                </td>
-            </tr>
-            </tbody>
-          </table>
-        </form>
-      </div>
+      <CustomerAddUpdateForm
+        formData={formData}
+        handleInputChange={handleInputChange}
+        isEditing={isEditing}
+        onSaveClick={onSaveClick}
+        onDeleteClick={onDeleteClick}
+        onCancelClick={onCancelClick}>
+      </CustomerAddUpdateForm>
     </div>
   );
 }
